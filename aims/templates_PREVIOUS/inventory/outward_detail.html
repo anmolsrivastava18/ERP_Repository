@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="row">
+    <div class="col-lg-6">
+    <h1 class="h3 mb-1 text-gray-800"> Outward Receipt Number : 
+        <a> {{ object.outward_receipt_number }} </a>
+    </h1>
+  </div>
+    <div class="col-lg-6">
+    <a href="{% url 'outward-receipt' slug=object.slug %}" class="float-right"><i class="fas fa-print"></i>Print Recipt</a>
+    </div>
+  </div>
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Border Left Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Type</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_type }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Part Number</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_number }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Quantity</h6>
+        </div>
+        <div class="card-body">
+          {{ object.quantity }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Batch Number</h6>
+        </div>
+        <div class="card-body">
+          {{ object.batch_number }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">From Warehouse Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.from_warehouse_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Vendor Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.vendor_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-danger">
+          <h6 class="m-0 font-weight-bold text-danger">Authorised By</h6>
+        </div>
+        <div class="card-body">
+          {{ object.authorised_by }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Border Bottom Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Verified By</h6>
+        </div>
+        <div class="card-body">
+          {{ object.verified_by }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">To Warehouse Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.to_warehouse_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Unit Of Measure</h6>
+        </div>
+        <div class="card-body">
+          {{ object.unit_of_measure }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Mode Of Transport</h6>
+        </div>
+        <div class="card-body">
+          {{ object.mode_of_transport }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-danger">
+          <h6 class="m-0 font-weight-bold text-danger">Transport Charges</h6>
+        </div>
+        <div class="card-body">
+          {{ object.transport_charges }}
+        </div>
+      </div>      
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ object.remarks }}
+        </div>
+      </div>     
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <!-- <h1 class="h3 mb-2 text-gray-800">Products Ready for Installation</h1> -->
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Commodity wise Inward</h6>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-3">
+            {{ form.com |as_crispy_field }}
+          </div>
+          <div class="col-3">
+            {{ form.warehouse |as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ form.st_date |as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ form.ed_date |as_crispy_field }}
+          </div>
+          <div class="col-2 align-self-center">
+            <input type="submit" class="btn btn-success align-left" value="Get"/>
+            <a class="btn btn-danger align-left" href="{% url 'home' %}">
+            <span>Cancel</span></a>
+          </div>
+          {% if form.non_field_errors %}
+            <div class="text-center">
+              <a class="small" style="color:red;">
+                {% for error in form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+  {% if bom %}
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Assets Created using '{{bom}}'</h6>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th> Product Name </th>
+                    <th> Quantity </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for asset in asset_by_bom %}
+                    <tr>
+                      <td> {{ asset.product_name__product_name }} </td>
+                      <td> {{asset.count}} </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if com %}
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Commodity wise Inward of Parts in Selected Range </h6>
+      </div>
+      <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th> Part Name </th>
+                    <th> Quantity </th>
+                    <th> Average Price Per Part</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for asset in commodity_wise_in %}
+                    <tr>
+                      <td> {{ asset.part_name }} </td>
+                      <td> {{asset.received_quantity}} </td>
+                      <td> {{ asset.avg_price }} </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  {% endif %}
+<!-- /.container-fluid -->
+
+{% endblock %}
+
+{% block pageLevelScripts %}
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+
+  <script>
+    $("#id_st_date").attr("autocomplete", "off");
+    var picker = new Pikaday({ field: $('#id_st_date')[0] });
+    $("#id_ed_date").attr("autocomplete", "off");
+    var picker = new Pikaday({ field: $('#id_ed_date')[0] });
+  </script>
+
+{%endblock%}

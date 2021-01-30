@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+  <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-1 text-gray-800" style="text-align: center;">
+      Part Number : {{ object.part_number }}
+        {% if perms.inventory.change_parts %}
+          <a href="{% url 'parts-update' pk=object.pk %}"> <i class="fas fa-edit"></i></a>
+        {% endif %}
+    </h1>
+    <br/>
+
+    <!-- Content Row -->
+    <div class="row">
+      <div class="col-6">
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Name</h6>
+          </div>
+          <div class="card-body">
+              {{ object.part_name }}
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Description</h6>
+          </div>
+          <div class="card-body">
+              {{ object.part_description }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Vendor Name</h6>
+          </div>
+          <div class="card-body">
+              {{ object.vendor_name }}
+            <!-- {{ object.weight }} -->
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Remarks</h6>
+          </div>
+          <div class="card-body">
+              {{ object.remarks }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Type</h6>
+          </div>
+          <div class="card-body">
+              {{ object.part_type }}
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Commodity</h6>
+          </div>
+          <div class="card-body">
+              {{ object.commodity_name }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Availability</h6>
+          </div>
+          <div class="card-body">
+              {{ object.availability }}
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Part Dimensions</h6>
+          </div>
+          <div class="card-body">
+              {{ object.dimensions }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Class</h6>
+          </div>
+          <div class="card-body">
+              {{ object.part_class }}
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Weight </h6>
+          </div>
+          <div class="card-body">
+              {{ object.weight }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Part Life</h6>
+          </div>
+          <div class="card-body">
+              {{ object.part_life }}
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header py-3 border-left-primary">
+            <h6 class="m-0 font-weight-bold text-primary">Tech Spec</h6>
+          </div>
+          <div class="card-body">
+              {{ object.tech_spec }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+          {% if object.part_usermanual %}
+            <div class="card mb-4">
+              <div class="card-header py-3 border-left-primary">
+                <h6 class="m-0 font-weight-bold text-primary">Part Documents</h6>
+              </div>
+              <div class="card-body">
+                <a href="{{ object.part_usermanual.url }}" target="_blank">Download</a>
+              </div>
+            </div>
+          {% endif %}
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

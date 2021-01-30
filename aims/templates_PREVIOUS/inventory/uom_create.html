@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Create Unit Of Measure</h1>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Create Unit Of Measure</h6>
+            </div>
+            <div class="card-body">
+              <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-6">
+                    {{ form.uom |as_crispy_field }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    {{ form.description |as_crispy_field }}
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-success align-left" value="Save" />
+                <a class="btn btn-danger align-left" href="{% url 'uom-list' %}">
+                  <!-- <i class="fas fa-indent"></i> -->
+                  <span>Cancel</span>
+                </a>
+                    {% if form.non_field_errors %}
+                      <div class="text-center">
+                      <a class="small" style="color:red;">
+                        {% for error in form.non_field_errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </a>
+                    </div>
+                    {% endif %}
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+
+{% endblock %}
+

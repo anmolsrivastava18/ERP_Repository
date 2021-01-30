@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-1 text-gray-800">Overseas Invoice Details</h1>
+  <!-- Content Row -->
+            <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Invoice Number :
+              {% if perms.inventory.full_details_overseasinvoice %}
+                <a href="{% url 'overseasinvoice-update' pk=object.pk %}">{{ object.invoice_number }}
+                  <i class="fas fa-edit"></i>
+                </a>
+              {% else %}
+                <a>{{ object.invoice_number }}</a>
+              {% endif %}
+                </h6>
+            </div>
+            <div class="card-body">
+              <hr class="sidebar-divider d-none d-md-block">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> Part Number </th>
+                      <th> Part Name </th>
+                      <th> Unit Of Measure </th>
+                      <th> Vendor Name </th>
+                      <th> Vendor Code </th>
+                      <th class="m-0 font-weight-bold text-danger"> Total Amount </th>
+                      <th class="m-0 font-weight-bold text-danger"> Price Per Part </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <th> {{ object.part_number }} </th>
+                    <th> {{ object.part_name }} </th>
+                    <th> {{ object.unit_of_measure }} </th>
+                    <th> {{ object.vendor_name }} </th>
+                    <th> {{ object.vendor_code }} </th>
+                    <th> {{ object.total_amount }} </th>
+                    <th> {{ object.price_per_part }} </th>
+                  </tbody>
+                </table>
+              </div>
+              <hr class="sidebar-divider d-none d-md-block">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> Invoice Number </th>
+                      <th> Invoice Date </th>
+                      <th> Invoice Quantity </th>
+                      <th> Invoice Amount </th>
+                      <th> Invoice GST %</th>
+                      <th> Invoice GST Amount </th>
+                      <th> Bank Charges </th>
+                      <th> Total Invoice Amount </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <th> {{ object.invoice_number }} </th>
+                      <th> {{ object.invoice_date }} </th>
+                      <th> {{ object.invoice_quantity }} </th>
+                      <th> &#8377 {{ object.invoice_amount }} </th>
+                      <th> {{ object.invoice_gst }}% </th>
+                      <th> &#8377 {{ object.invoice_gst_amount }} </th>
+                      <th> &#8377 {{ object.bank_charges }} </th>
+                      <th> &#8377 {{ object.total_invoice_amount }} </th>
+                  </tbody>
+                </table>
+              </div>
+              <h5 class="m-0 font-weight-bold text-success"> Customs Details </h5>
+              <hr class="sidebar-divider d-none d-md-block">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> BOE Number </th>
+                      <th> BOE Date </th>
+                      <th> BCD </th>
+                      <th> BCD Amount </th>
+                      <th> Customs GST </th>
+                      <th> Customs GST Amount </th>
+                      <th> Customs Fine Amount </th>
+                      <th> Intrest Amount </th>
+                      <th> Total Duty Amount </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <th> {{ object.boe_number }} </th>
+                      <th> {{ object.boe_date }} </th>
+                      <th> {{ object.bcd }} </th>
+                      <th> &#8377 {{ object.bcd_amount }} </th>
+                      <th> {{ object.customs_gst }}% </th>
+                      <th> &#8377 {{ object.customs_gst_amount }} </th>
+                      <th> &#8377 {{ object.customs_fine_amount }} </th>
+                      <th> &#8377 {{ object.intrest_amount }} </th>
+                      <th> &#8377 {{ object.total_duty_amount }} </th>
+                  </tbody>
+                </table>
+              </div>
+              <h5 class="m-0 font-weight-bold text-success"> Freight Details </h5>
+              <hr class="sidebar-divider d-none d-md-block">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> Freight Agency </th>
+                      <th> Weight </th>
+                      <th> Freight Invoice Number </th>
+                      <th> Freight Invoice Date </th>
+                      <th> Freight Charges Taxable </th>
+                      <th> Freight GST </th>
+                      <th> Freight GST Amount </th>
+                      <th> Freight Charges Nontaxable </th>
+                      <th> Total Freight Amount </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <th> {{ object.fright_agency }} </th>
+                      <th> {{ object.weight }} </th>
+                      <th> {{ object.fright_invoice_number }} </th>
+                      <th> {{ object.fright_invoice_date }} </th>
+                      <th> &#8377 {{ object.fright_charges_taxable }} </th>
+                      <th> {{ object.fright_gst }} % </th>
+                      <th> &#8377 {{ object.fright_gst_amount }} </th>
+                      <th> &#8377 {{ object.fright_charges_nontaxable }} </th>
+                      <th> &#8377 {{ object.total_fright_amount }} </th>
+                  </tbody>
+                </table>
+              </div>
+              <h5 class="m-0 font-weight-bold text-success"> Clearance Details </h5>
+              <hr class="sidebar-divider d-none d-md-block">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> Clearance Agency </th>
+                      <th> Clearance Invoice Number </th>
+                      <th> Clearance Invoice Date </th>
+                      <th> Clearance Charges Taxable </th>
+                      <th> Clearance GST </th>
+                      <th> Clearance GST Amount </th>
+                      <th> Clearance Charges Nontaxable </th>
+                      <th> Local Transport Fee </th>
+                      <th> Total Clearance Amount </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <th> {{ object.clearance_agency }} </th>
+                      <th> {{ object.clearance_invoice_number }} </th>
+                      <th> {{ object.clearance_invoice_date }} </th>
+                      <th> &#8377 {{ object.clearance_charges_taxable }} </th>
+                      <th> {{ object.clearance_gst }} % </th>
+                      <th> &#8377 {{ object.clearance_gst_amount }} </th>
+                      <th> &#8377 {{ object.clearance_charges_nontaxable }} </th>
+                      <th> &#8377 {{ object.local_transport_fee }} </th>
+                      <th> &#8377 {{ object.total_clearance_amount }} </th>
+                  </tbody>
+                </table>
+              </div>
+              <h5 class="m-0 font-weight-bold text-success"> Invoice's </h5>
+              <hr class="sidebar-divider d-none d-md-block">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> Overseas Invoice </th>
+                      <th> Customs Invoice </th>
+                      <th> Clearance Invoice </th>
+                      <th> Clearance Charges </th>
+                      <th> Remarks </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <th>
+                        {% if object.overseas_invoice %}
+                          <a href="{{ object.overseas_invoice.url }}" target="_blank">Overseas Invoice Download</a>
+                        {% else %}
+                          File Not attached
+                        {% endif %}
+                      </th>
+                      <th>
+                        {% if object.customs_invoice %}
+                          <a href="{{ object.customs_invoice.url }}" target="_blank">Customs Invoice Download </a>
+                        {% else %}
+                          File Not attached
+                        {% endif %}
+                      </th>
+                      <th>
+                        {% if object.fright_invoice %}
+                          <a href="{{ object.fright_invoice.url }}" target="_blank">Fright Invoice Download</a>
+                        {% else %}
+                          File Not attached
+                        {% endif %}
+                      </th>
+                      <th>
+                        {% if object.clearance_invoice %}
+                          <a href="{{ object.clearance_invoice.url }}" target="_blank">Clearance Invoice Download</a>
+                        {% else %}
+                          File Not attached
+                        {% endif %}
+                      </th>
+                      <th> {{ object.Remarks }} </th>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}

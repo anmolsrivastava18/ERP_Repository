@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Index{% endblock %}
+{% block pageTop %}
+
+<style type="text/css">
+img.two {
+  height: 50%;
+  width: 50%;
+}
+</style>
+ {%endblock%}
+{% block index %}
+{% if perms.users.can_view_dashboard %}
+  <div class="container-fluid">
+    <div class="card shadow mb-4">
+      <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary d-inline align-left">
+          Quick Dashboard links
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+            <div class="col-xl-3 col-md-4 mb-12">
+              <div class="card bg-success shadow h-100 py-2">
+                <a style="text-decoration:none" href="{% url 'get_stock' %}">
+                  <div class="card-body text-white">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-lg font-weight-bold text-uppercase mb-1"> Stock Status</div>
+                        <p> Stock In Warehouse </p>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fab fa-squarespace fa-3x text-gray-300" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-danger shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'get_saftey_stock' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1"> Stock Deficiency </div>
+                      <p> Parts running out of stock </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-shield-alt fa-3x text-gray-300" ></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-secondary shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'get_stock_batchnumber' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1"> Stock </div>
+                      <p> Batch wise Stock data </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fab fa-squarespace fa-3x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-warning shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'commodity-wise-inward' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1">Commodity Inward</div>
+                      <p>Commodity wise inward </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-atom fa-3x text-gray-300" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row with-top-margin">
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-secondary shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'asset-available' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1"> Assets Availability </div>
+                      <p>Assets available for Installation </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-receipt fa-3x text-gray-500"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-info shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'asset-by-bom' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1">Assets Report</div>
+                      <p> BOM Wise Asset Report </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-receipt fa-3x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-info shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'parts_demand' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1"> Parts as per Demand</div>
+                      <p> Critical parts as per demand </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-angle-double-up fa-3x text-gray-300" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-4 mb-12">
+            <div class="card bg-success shadow h-100 py-2">
+              <a style="text-decoration:none" href="{% url 'defected-parts' %}">
+                <div class="card-body text-white">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1"> Defected Parts </div>
+                      <p> Defected Parts by the Vendor </p>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fab fa-delicious fa-3x text-gray-300" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+{%else%}
+  <div class="container-fluid">
+    <div class="card shadow mb-4">
+      <div class="card-header">
+        <h2 class="m-0 font-weight-bold text-success d-inline align-left">
+          Welcome to AIMS!
+        </h2>
+      </div>
+    <div class="card-body">
+      <img class="card-img-bottom two" src="{% static 'images/logo.png' %}" width="200" height="200" alt="part image" >
+    </div>
+  </div>
+{%endif%}
+
+{% endblock %}
+</div>

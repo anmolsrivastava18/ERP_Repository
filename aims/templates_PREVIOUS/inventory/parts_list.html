@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n staticfiles %}
+{% block index %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Parts List</h1>
+          <p class="mb-4">Here is the list of Parts available.</p>
+          {% if messages %}
+              {% for message in messages %}
+                {% if message.tags %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                {% endif %}
+              {% endfor %}
+          {% endif %}
+          <!-- DataTables Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Parts List</h6>
+              {% if perms.inventory.add_parts %}
+                <a href="{% url 'parts-add' %}" class="btn btn-primary btn-circle float-right">
+                  <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="Create"></i>
+                </a>
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered datatable" style="color: black">
+                  <thead>
+                    <tr>
+                      <th> Part Number </th>
+                      <th> Part Name </th>
+                      <th> Unit Of Measure </th>
+                      <th> Vendor Name </th>
+                      <th> Lead time </th>
+                      <th> Re-order point </th>
+                      <th> Safety stock </th>
+                      <th> Last Updated </th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th> Part Number </th>
+                      <th> Part Name </th>
+                      <th> Unit Of Measure </th>
+                      <th> Vendor Name </th>
+                      <th> Lead time </th>
+                      <th> Re-order point </th>
+                      <th> Safety stock </th>
+                      <th> Last Updated </th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+{% block pageLevelScripts %}
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/buttons.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/jszip.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/buttons.html5.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/wareshouse-datatable.js' %}"></script>
+
+
+  <script type="text/javascript">
+        let TESTMODEL_LIST_JSON_URL = '{% url "parts-list-data" %}';
+
+        let ORDER_BY = [[ 7, "desc" ]];
+        // translations for datatables
+
+        let dt_language = {
+            "emptyTable":     "{% trans "No data available in table" %}",
+            "info":           "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
+            "infoEmpty":      "{% trans "Showing 0 to 0 of 0 entries" %}",
+            "infoFiltered":   "{% trans "(filtered from _MAX_ total entries)" %}",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "{% trans "Show _MENU_ entries" %}",
+            "loadingRecords": "{% trans "Loading..." %}",
+            "processing":     "{% trans "Processing..." %}",
+            "search":         "{% trans "Search:" %}",
+            "zeroRecords":    "{% trans "No matching records found" %}",
+            "paginate": {
+                "first":      "{% trans "First" %}",
+                "last":       "{% trans "Last" %}",
+                "next":       "{% trans "Next" %}",
+                "previous":   "{% trans "Previous" %}"
+            },
+            "aria": {
+                "sortAscending":  "{% trans ": activate to sort column ascending" %}",
+                "sortDescending": "{% trans ": activate to sort column descending" %}"
+            }
+        }
+    </script>
+{%endblock%}

@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-1 text-gray-800">
+    Part Number : {% if perms.inventory.change_parts %} <a href="{% url 'parts-update' pk=object.pk %}">{%endif%} 
+      {{ object.part_number }} <i class="fas fa-edit"></i>
+    </a>
+  </h1>
+  <!-- Content Row -->
+  <div class="row">
+    <!-- Border Left Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Type</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_type }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Unit Of Measure</h6>
+        </div>
+        <div class="card-body">
+          <!-- {{ object.part_description }} -->
+          {{ object.unit_of_measure }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Description</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_description }}
+          <!-- {{ object.vendor_name }} -->
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Commodity</h6>
+        </div>
+        <div class="card-body">
+          {{ object.commodity_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Vendor Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.vendor_name }}
+          <!-- {{ object.weight }} -->
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Class</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_class }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-danger">
+          <h6 class="m-0 font-weight-bold text-danger">Part Life</h6>
+        </div>
+        <div class="card-body">
+          {{ object.part_life }}
+        </div>
+      </div>
+      <div class="card mb-4" >
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Image</h6>
+        </div>
+        <div class="card-body">
+          <img class="card-img-bottom" src="{{ object.part_image.url }}" sizes="50x50" alt="part image" >
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Border Bottom Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Availability</h6>
+        </div>
+        <div class="card-body">
+          {{ object.availability }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Tech Spec</h6>
+        </div>
+        <div class="card-body">
+          {{ object.tech_spec }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Reorder Point</h6>
+        </div>
+        <div class="card-body">
+          {{ object.reorder_point }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Lead Time (In Days)</h6>
+        </div>
+        <div class="card-body">
+          {{ object.lead_time }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-danger">
+          <h6 class="m-0 font-weight-bold text-danger">Safety Stock</h6>
+        </div>
+        <div class="card-body">
+          {{ object.safety_stock }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-danger">
+          <h6 class="m-0 font-weight-bold text-danger">Part Dimensions</h6>
+        </div>
+        <div class="card-body">
+          {{ object.dimensions }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Weight </h6>
+        </div>
+        <div class="card-body">
+          {{ object.weight }}
+        </div>
+      </div>      
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ object.remarks }}
+        </div>
+      </div>
+
+      {% if object.part_usermanual %}
+
+      <div class="card mb-4" >
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Part Documents</h6>
+        </div>
+        <div class="card-body">
+          <a href="{{ object.part_usermanual.url }}" target="_blank">Download</a>
+        </div>
+      </div>
+
+      {% endif %}
+
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

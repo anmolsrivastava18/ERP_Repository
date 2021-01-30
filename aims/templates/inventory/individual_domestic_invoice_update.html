@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+    <!-- Begin Page Content -->
+  <div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Update Individual Domestic Invoice</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Update Individual Domestic Invoice</h6>
+      </div>
+      <div class="card-body">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+          <div class="row">
+            <div class="col-4">
+                {{ form.invoice_number |as_crispy_field }}
+            </div>
+
+            <div class="col-8">
+                {{ form.remarks |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.invoice_date |as_crispy_field }}
+            </div>
+
+            <div class="col-8">
+                {{ form.vendor_name |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.part_number |as_crispy_field }}
+            </div>
+
+            <div class="col-8">
+                {{ form.part_name |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.invoice_quantity |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.unit_of_measure |as_crispy_field }}
+              <!-- Workaround to include disabled select field in form submit -->
+              <input type="hidden" name="unit_of_measure" id="uom_select_hack" value="{{ form.unit_of_measure.value }}">
+            </div>
+
+            <div class="col-4">
+                {{ form.invoice_amount |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.gst_percent |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.gst_amount |as_crispy_field }}
+            </div>
+
+            <div class="col-4">
+                {{ form.total_amount |as_crispy_field }}
+            </div>
+          </div>
+          <input type="submit" class="btn btn-success align-left" value="Save"/>
+          <a class="btn btn-danger align-left" href="{% url 'individual_domestic_invoice-list' %}">
+            <span>Cancel</span>
+          </a>
+            {% if form.non_field_errors %}
+              <div class="text-center">
+                <a class="small" style="color:red;">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </a>
+              </div>
+            {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+    <!-- /.container-fluid -->
+
+{% endblock %}
+{% block pageLevelScripts %}
+
+
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+  <script src="{% static 'js/project.js' %}"></script>
+
+  <script>
+      $(document).ready(function () {
+          // Date picker
+          $("#id_invoice_date").attr("autocomplete", "off");
+          let picker = new Pikaday({field: $('#id_invoice_date')[0]});
+
+          auto_fill_part_name_uom("{% url 'get_part_name' %}");
+
+          // Auto complete select 2 field
+          $('#id_part_number, #id_vendor_name').select2({
+              placeholder: '---------',
+              theme: 'bootstrap4',
+          });
+
+          let target_invoice_field = $('#id_invoice_number');
+          let target_amount = $('#id_invoice_amount');
+          let target_gst_percent = $('#id_gst_percent');
+          let target_gst_amount = $('#id_gst_amount');
+          let target_total_amount = $('#id_total_amount');
+          target_invoice_field.prop('readonly', true);
+          target_invoice_field.css('font-weight', 'bold');
+
+          target_gst_amount.prop('readonly', true);
+          target_total_amount.prop('readonly', true);
+
+
+          // The next piece of code will update the value of GST amount and the total amount as the user changes the
+          // value in the "Amount" or "GST %" field
+          target_amount.on('keyup', function () {
+              let invoice_amount = Number(target_amount.val());
+              let gst_multiplier = Number(target_gst_percent.val()) / 100;
+              target_gst_amount.val((invoice_amount * gst_multiplier).toFixed(2));
+              target_total_amount.val((invoice_amount * (1 + gst_multiplier)).toFixed(2));
+          });
+
+
+          target_gst_percent.on('keyup', function () {
+              let invoice_amount = Number(target_amount.val());
+              let gst_multiplier = Number(target_gst_percent.val()) / 100;
+              target_gst_amount.val((invoice_amount * gst_multiplier).toFixed(2));
+              target_total_amount.val((invoice_amount * (1 + gst_multiplier)).toFixed(2));
+          });
+          // ******************************************************************************************************//
+      })
+  </script>
+{% endblock %}

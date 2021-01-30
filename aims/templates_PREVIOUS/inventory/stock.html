@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n staticfiles %}
+{% block index %}
+  <!-- Begin Page Content -->
+  <div class="container-fluid">
+    <!-- Content Row -->
+    <div class="row">
+      <!-- Area Chart -->
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Stock Overview</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+
+          <div class="col-6">
+            <div id="div_id_part_number" class="form-group ">
+              <label for="id_part_number" class="col-form-label  requiredField">
+                Warehouse<span class="asteriskField">*</span>
+              </label>
+              <div class="">
+                <select name="warehouse" class="select form-control" required="" id="id_warehouser">
+                  <option value="" selected="">---------</option>
+                  <option value="all_warehouses">All warehouses</option>
+                  {% for warehouse in warehouses %}
+                  <option value="{{warehouse.warehouse_code}}">{{ warehouse.warehouse_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <table id="stock-detail-table" style="display: none; color: black" class="table table-bordered datatable">
+            <thead>
+              <tr>
+                <th>Part Number</th>
+                <th>Part Name</th>
+                <th>Total Stock</th>
+                <th>Defect Stock</th>
+                <th>Total Usable Stock</th>
+                <th>Re-Order Point</th>
+                <th>Safety Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /.container-fluid -->
+
+<!-- End of Main Content -->
+{% endblock %}
+{% block pageLevelScripts %}
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/buttons.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/jszip.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/buttons.html5.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script type="text/javascript">
+
+$(document).ready(function(){
+  let table = $('#stock-detail-table');
+
+  let dataTable = table.DataTable({
+    dom: "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+          "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+    buttons: ['copy', 'csv', 'excel',],
+
+      <!-- The following piece of code will highlight the row on the basis of stock available in inventory -->
+      "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          if ( aData[4] < aData[6])
+          {
+              $('td', nRow).css('background-color', 'rgb(250, 166, 10)');
+          }
+          else if ( aData[4] < aData[5])
+          {
+              $('td', nRow).css('background-color', 'rgb(245, 235, 91)');
+          }
+      }
+  });
+
+  $('#id_warehouser').change(function(e){
+    let warehouse = $(this).val();
+
+    $.ajax({
+      type : 'GET',
+      url :  "{% url 'get_stock' %}",
+      data : {"warehouse":warehouse},
+      success : function(response){
+        dataTable.clear();
+
+        let data = [];
+
+        $.each(response, function(i, item) {
+          data.push([
+              item['Part Number'],
+              i,
+              item['total_stock'],
+              item['defect'],
+              item['total_usable_stock'],
+              item['Re-order Point'],
+              item['safety_stock']
+          ])
+        });
+
+        table.show();
+        dataTable.rows.add(data);
+        dataTable.draw();
+      },
+
+      error : function(response){
+          console.error(response);
+          table.hide();
+      }
+    })
+  });
+
+  // Select the all warehouse on load
+  $('#id_warehouser').val('all_warehouses').trigger('change');
+})
+
+  </script>
+
+{%endblock%}

@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-1 text-gray-800">Asset Details
+    {% if perms.inventory.change_asset %}
+      <a href="{% url 'asset-update' slug=object.slug %}">
+        <i class="fas fa-edit"></i>
+      </a>
+    {%endif%}
+  </h1>
+  <!-- <p class="mb-4">Bootstrap's default utility classes can be found on the official <a href="https://getbootstrap.com/docs">Bootstrap Documentation</a> page. The custom utilities below were created to extend this theme past the default utility classes built into Bootstrap's framework.</p> -->
+
+  <!-- Content Row -->
+  <div class="row">
+    <!-- Border Left Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Asset ID</h6>
+        </div>
+        <div class="card-body"> 
+          <a> {{ object.asset_id }} </a>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Product Name</h6>
+        </div>
+        <div class="card-body"> 
+          <a> {{ object.product_name }} </a>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Asset State</h6>
+        </div>
+        <div class="card-body">
+          {{ object.asset_state }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Asset Price</h6>
+        </div>
+        <div class="card-body">
+          {{ object.total_price }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Warehouse Name</h6>
+        </div>
+        <div class="card-body"> 
+          <a> {{ object.warehouse_name }} </a>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">BOM Name</h6>
+        </div>
+        <div class="card-body">
+          {{ object.bom_name }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ object.remarks }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Mfg Date</h6>
+        </div>
+        <div class="card-body">
+          {{ object.mfg_date }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+          <div class="card-header py-3  border-left-success">
+            <h6 class="m-0 font-weight-bold text-success">Parts</h6>
+          </div>
+          <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th> Qty</th>
+                      <th> PartName </th>
+                      <th> PartNumber </th>
+                      <th> BatchNumber  </th>
+                      <th> Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for part in object.parts %}
+                      <tr>
+                        <td> {{ part.Qty }} </td>
+                        <td> {{ part.PartName }} </td>
+                        <td> {{ part.PartNumber }} </td>
+                        <td> {{ part.BatchNumber }}  </td>
+                        <td> {{ part.Remarks }} </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+{% block pageLevelScripts %}
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+{%endblock%}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+    <!-- Begin Page Content -->
+  <div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Create Individual Domestic Invoice</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Create Individual Domestic Invoice</h6>
+      </div>
+      <div class="card-body">
+        <form name="Invoice_creation_form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="row">
+            <div class="col-6">
+                {{ form.invoice_number |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.invoice_date |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.part_number |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.part_name |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.invoice_quantity |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.unit_of_measure |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.vendor_name |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.invoice_amount |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.gst_percent |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.gst_amount |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.total_amount |as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.remarks |as_crispy_field }}
+            </div>
+          </div>
+          <input type="submit" class="btn btn-success align-left" value="Save"/>
+          <a class="btn btn-danger align-left" href="{% url 'individual_domestic_invoice-list' %}">
+            <span>Cancel</span>
+          </a>
+            {% if form.non_field_errors %}
+              <div class="text-center">
+                <a class="small" style="color:red;">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </a>
+              </div>
+            {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+    <!-- /.container-fluid -->
+
+{% endblock %}
+
+{% block pageLevelScripts %}
+
+  <script>
+      $(document).ready(function () {
+          let data_object = JSON.parse(decodeURI(location.search.substring(1)));
+          data_object.Invoice_parts = JSON.parse(data_object["Invoice_parts"]);
+          console.log(data_object);
+
+          // The following piece of code will retrieve the values of part_number, part_name and unit_of_measure
+          // from the response returned by the AJAX request
+
+          $.ajax({
+              async: false,
+              type : 'GET',
+              url :  "{% url 'get_partID_partName_uomID' %}",
+              data : {"part_number":data_object.Invoice_parts[0]['PartNumber']},
+              success : function(response){
+                  $('#id_part_number').val(response.id);
+                  $('#id_part_name').val(response["part_name"]);
+                  $('#id_unit_of_measure').val(response.uom);
+              },
+              error : function(response){
+                  console.error(response);
+                  $('#id_part_number').val("");
+              }
+          });
+
+          // ************************************************************************************************ //
+
+          let amount_pointer = $('#id_invoice_amount');
+          let gst_pointer = $('#id_gst_percent');
+
+          $('#id_invoice_number').val(data_object.invoice_number);
+          $('#id_invoice_date').val(data_object.invoice_date);
+          $('#id_vendor_name').val(data_object.vendor_name);
+          $('#id_invoice_quantity').val(data_object.Invoice_parts[0]['Qty']);
+
+          amount_pointer.val(data_object.Invoice_parts[0]['Amt']);
+          gst_pointer.val(data_object.Invoice_parts[0]['GST']);
+          $('#id_total_amount').val(data_object.Invoice_parts[0]['Net_amt']);
+          $('#id_remarks').val(data_object.Invoice_parts[0]['Remarks']);
+
+          let amount = Number(amount_pointer.val());
+          let gst_multiplier = Number(gst_pointer.val() / 100);
+          let gst_amount = (amount * gst_multiplier).toFixed(2);
+          $('#id_gst_amount').val(gst_amount);
+
+          // Removing the very first element from the "Invoice_parts" array
+          data_object.Invoice_parts.shift();
+
+          if (data_object.Invoice_parts.length !== 0) {
+              // Converting the array "Invoice_parts" into string
+              data_object.Invoice_parts = JSON.stringify(data_object.Invoice_parts);
+
+              // Opening the new page for creating the individual invoice
+              window.open('{% url 'individual_domestic_invoice-add' %}?' + JSON.stringify(data_object), '_blank');
+          }
+
+          if ($('#id_part_number').val()  && $('#id_part_name').val() && $('#id_unit_of_measure').val()) {
+              $("form[name='Invoice_creation_form']").submit();
+          }
+      })
+  </script>
+{% endblock %}

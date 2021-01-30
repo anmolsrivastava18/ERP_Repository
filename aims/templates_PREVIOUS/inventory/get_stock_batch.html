@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n staticfiles %}
+{% block index %}
+  <!-- Begin Page Content -->
+  <div class="container-fluid">
+    <!-- Content Row -->
+    <div class="row">
+      <!-- Area Chart -->
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Get Stock Batch Overview</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+
+
+          <div class="col-6">
+            <div id="div_id_part_number" class="form-group ">
+              <label for="id_part_number" class="col-form-label  requiredField">
+                Warehouse<span class="asteriskField">*</span>
+              </label>
+              <div class="">
+                <select name="warehouse" class="select form-control" required="" id="id_warehouser">
+                  <option value="" selected="">---------</option>
+                  <option value="all_warehouses">All warehouses</option>
+                  {% for warehouse in warehouses %}
+                  <option value="{{warehouse.warehouse_code}}">{{ warehouse.warehouse_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <table id="stock-detail-table" style="display: none;" class="table table-bordered datatable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Part Name</th>
+                <th>Batch Number</th>
+                <th>Total Stock</th>
+                <th>Defect Stock</th>
+                <th>Total Usable Stock </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+{% endblock %}
+{% block pageLevelScripts %}
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  <script type="text/javascript">
+    
+$(document).ready(function(){
+
+  $('#id_warehouser').change(function(e){
+
+    var warehouse = $(this).val();
+
+    $.ajax({
+       type : 'GET',
+       url :  "{% url 'get_stock_batchnumber' %}",
+       data : {"warehouse":warehouse},
+       success : function(response){
+          $('tbody').empty()
+          $.each(response, function(i, item){
+            $('tbody').append(`
+              <tr>
+                <td>${item['part_name']}</td>
+                <td>${item['batch_number']}</td>
+                <td>${item['total_stock']}</td>
+                <td>${item['defect']}</td>
+                <td>${item['total_usable_stock']}</td>
+              </tr>`
+              )
+            }
+          )
+          $('#stock-detail-table').show();
+          $('#stock-detail-table').DataTable();
+
+       },
+       error : function(response){
+          console.error(response);
+          $('#stock-detail-table').hide();
+       }
+    })
+
+
+
+  })
+
+  // Select the all warehouse on load
+  $('#id_warehouser').val('all_warehouses').trigger('change');
+
+})
+
+  </script>
+
+{%endblock%}

@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Bill of Materials Compare</h6>
+    </div>
+    <div class="card-body">
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-4">
+            {{ form.bom_1 |as_crispy_field }}
+          </div>
+          <div class="col-4">
+            {{ form.bom_2 |as_crispy_field }}
+          </div>
+          <div class="col-4 align-self-center">
+            <input type="submit" class="btn btn-success align-left" value="Execute"/>
+            <a class="btn btn-danger align-left" href="{% url 'home' %}">
+            <span>Cancel</span></a>
+          </div>
+          {% if form.non_field_errors %}
+            <div class="text-center">
+              <a class="small" style="color:red;">
+                {% for error in form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+  {% if bom_1 and bom_2 %}
+
+  <div class="row">
+    <!-- Border Left Utilities -->
+    <div class="col-lg-6">
+
+    <!-- Left column START -->
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">BOM Name</h6>
+        </div>
+          <div class="card-body"> 
+            {{ bom_1.bom_name }} sdfg
+          </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">BOM file</h6>
+        </div>
+        <div class="card-body">     
+          {% if bom_1.bom_file %}
+              <a href="{{ bom_1.bom_file.url }}" target="_blank" >BOM document</a>          
+          {% endif %}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">BOM Description</h6>
+        </div>
+        <div class="card-body">
+          {{ bom_1.bom_description }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ bom_1.remarks }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+        <h6 class="m-0 font-weight-bold text-success">Parts</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered datatable" id="bom1_dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th> PartNumber</th>
+                    <th> PartName</th>
+                    <th> Qty</th>
+                    <th> Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for part in bom_1.parts %}
+                    <tr>
+                      <td>{{ part.PartNumber }}</td>
+                      <td>{{ part.PartName }}</td>
+                      <td>{{ part.Qty }}</td>
+                      <td>{{ part.Remarks }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+
+    <!-- Left column END -->
+    </div>
+
+    <div class="col-lg-6">
+    <!-- Right column START -->
+
+
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">BOM Name</h6>
+        </div>
+          <div class="card-body"> 
+            {{ bom_2.bom_name }} sdfg
+          </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">BOM file</h6>
+        </div>
+        <div class="card-body">     
+          {% if bom_2.bom_file %}
+              <a href="{{ bom_2.bom_file.url }}" target="_blank" >BOM document</a>          
+          {% endif %}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">BOM Description</h6>
+        </div>
+        <div class="card-body">
+          {{ bom_2.bom_description }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ bom_2.remarks }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+        <h6 class="m-0 font-weight-bold text-success">Parts</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered datatable" id="bom2_dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th> PartNumber</th>
+                    <th> PartName</th>
+                    <th> Qty</th>
+                    <th> Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for part in bom_2.parts %}
+                    <tr>
+                      <td>{{ part.PartNumber }}</td>
+                      <td>{{ part.PartName }}</td>
+                      <td>{{ part.Qty }}</td>
+                      <td>{{ part.Remarks }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+
+
+    <!-- Right column END -->
+    </div>
+
+  </div>
+</div>
+  {% endif %}
+
+</div>
+<!-- /.container-fluid -->
+
+{% endblock %}
+
+{% block pageLevelScripts %}
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <!-- Page level custom scripts -->
+  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+
+    $('#bom1_dataTable, #bom2_dataTable').DataTable(
+      {responsive: true}
+    );
+
+    $('#id_bom_1, #id_bom_2').select2({
+      placeholder: '---------',
+      theme: 'bootstrap4',
+    });
+
+  });
+
+
+
+  </script>
+
+{%endblock%}

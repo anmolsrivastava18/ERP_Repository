@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -o errexit
+set -o pipefail
+
+if [ -z "${DONT_RUN_COLLECT_STATIC}" ]; then
+	python /app/manage.py collectstatic --noinput
+else
+	echo "Not running collectstatic as DONT_RUN_COLLECT_STATIC is set"
+fi
+
+/usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:$PORT --chdir=/app

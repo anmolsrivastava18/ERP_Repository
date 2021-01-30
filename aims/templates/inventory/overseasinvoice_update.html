@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block pageTop %}
+{%endblock%}
+
+{% block index %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Update Invoice </h1>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Update Invoice</h6>
+            </div>
+            <div class="card-body">
+              <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                   <div class="form-row">
+                    <div class="form-group col-md-4 mb-0">
+                      {{ form.part_number |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                      {{ form.part_name |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                      {{ form.vendor_name |as_crispy_field }}
+                    </div>
+                  </div>
+                  <hr class="sidebar-divider d-none d-md-block">
+                  <div class="form-row">
+                    <div class="form-group col-md-4 mb-0">
+                      {{ form.invoice_number |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                      {{ form.unit_of_measure |as_crispy_field }}
+                    <!-- Workaround to include disabled select field in form submit -->
+                    <input type="hidden" name="unit_of_measure" id="uom_select_hack" value="{{ form.unit_of_measure.value }}">
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                      {{ form.invoice_date |as_crispy_field }}
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.invoice_quantity |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.invoice_amount |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.invoice_gst |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.invoice_gst_amount |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.bank_charges |as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.total_invoice_amount |as_crispy_field }}
+                    </div>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#Customs" aria-expanded="false" aria-controls="#Customs">
+                      Customs
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#Fright" aria-expanded="false" aria-controls="#Fright">
+                      Fright
+                    </button>
+                   <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#Clearance" aria-expanded="false" aria-controls="#Clearance">
+                      Clearance
+                    </button>
+                    <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#invoices" aria-expanded="false" aria-controls="#invoices">
+                      Invoices
+                    </button>
+                  </div>
+                  <div class="collapse multi-collapse" id="Customs">
+                    <hr class="sidebar-divider d-none d-md-block">
+                    <div class="form-row">
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.boe_number |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.boe_date |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.bcd |as_crispy_field }}
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.bcd_amount |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.customs_gst |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.customs_gst_amount |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.customs_fine_amount |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.intrest_amount |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.total_duty_amount |as_crispy_field }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="collapse multi-collapse" id="Fright">
+                    <hr class="sidebar-divider d-none d-md-block">
+                    <div class="form-row">
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.fright_agency |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.fright_invoice_number |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.fright_invoice_date |as_crispy_field }}
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.weight |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.fright_charges_taxable |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.fright_gst |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.fright_gst_amount |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.fright_charges_nontaxable |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.total_fright_amount |as_crispy_field }}
+                      </div>
+                    </div>
+                </div>
+                  <div class="collapse multi-collapse" id="Clearance">
+                    <hr class="sidebar-divider d-none d-md-block">
+                    <div class="form-row">
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.clearance_agency |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.clearance_invoice_number |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 mb-0">
+                        {{ form.clearance_invoice_date |as_crispy_field }}
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.clearance_charges_taxable |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.clearance_gst |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.clearance_gst_amount |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.clearance_charges_nontaxable |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.local_transport_fee |as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-2 mb-0">
+                        {{ form.total_clearance_amount |as_crispy_field }}
+                      </div>
+                  </div>
+                </div>
+                  <hr class="sidebar-divider d-none d-md-block">
+                  {{ form.stage|as_crispy_field }}
+                  {{ form.remarks|as_crispy_field }}
+                  <div class="collapse multi-collapse" id="invoices">
+                      <hr class="sidebar-divider d-none d-md-block">
+                      <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                          {{ form.overseas_invoice |as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{ form.customs_invoice |as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{ form.fright_invoice |as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                          {{ form.clearance_invoice |as_crispy_field }}
+                        </div>
+                      </div>
+                  </div>
+
+                <input type="submit" class="btn btn-success align-left" value="Save" />
+                <a class="btn btn-danger align-left" href="{% url 'overseasinvoice-list' %}">
+                  <!-- <i class="fas fa-indent"></i> -->
+                  <span>Cancel</span>
+                </a>
+                    {% if form.non_field_errors %}
+                      <div class="text-center">
+                        <a class="small" style="color:red;">
+                          {% for error in form.non_field_errors %}
+                            {{ error }}
+                          {% endfor %}
+                        </a>
+                      </div>
+                    {% endif %}
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+{% endblock %}
+
+{% block pageLevelScripts %}
+<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+<script src="{% static 'js/project.js' %}"></script>
+
+
+
+<script>
+  $(document).ready(function(){
+
+      // Date picker
+      $("#id_invoice_date").attr("autocomplete", "off");
+      var picker = new Pikaday({ field: $('#id_invoice_date')[0] });
+
+      $("#id_fright_invoice_date").attr("autocomplete", "off");
+      var picker = new Pikaday({ field: $('#id_fright_invoice_date')[0] });
+
+      $("#id_clearance_invoice_date").attr("autocomplete", "off");
+      var picker = new Pikaday({ field: $('#id_clearance_invoice_date')[0] });
+
+      $("#id_boe_date").attr("autocomplete", "off");
+      var picker = new Pikaday({ field: $('#id_boe_date')[0] });
+
+      auto_fill_part_name_uom("{% url 'get_part_name' %}")
+
+
+
+     // Auto complete select 2 field
+     $('#id_part_number, #id_vendor_name').select2({
+      placeholder: '---------',
+      theme: 'bootstrap4',
+    });
+
+  })
+</script>
+{%endblock%}

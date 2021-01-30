@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-1 text-gray-800" style="text-align: center">Domestic Invoice details</h1>
+<br>
+  <!-- <p class="mb-4">Bootstrap's default utility classes can be found on the official <a href="https://getbootstrap.com/docs">Bootstrap Documentation</a> page. The custom utilities below were created to extend this theme past the default utility classes built into Bootstrap's framework.</p> -->
+
+  <!-- Content Row -->
+  <div class="row">
+    <!-- First column -->
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Invoice Number</h6>
+        </div>
+        <div class="card-body">
+            {{ object.invoice_number }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Transport Charges</h6>
+        </div>
+        <div class="card-body">
+            {{ object.transport_charges }}
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Second column -->
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Invoice Date</h6>
+        </div>
+        <div class="card-body">
+            {{ object.invoice_date }}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Last Updated</h6>
+        </div>
+        <div class="card-body">
+            {{ object.updated }}
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Third column -->
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-success">Total Invoice Amount</h6>
+        </div>
+        <div class="card-body">
+            {{ object.total_invoice_amount }}
+        </div>
+      </div>
+
+      <div class="card mb-4" >
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-success">Invoice Documents</h6>
+        </div>
+        <div class="card-body">
+            {% if object.domestic_invoice %}
+              <a href="{{ object.domestic_invoice.url }}" target="_blank">Download</a>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Lowest left column -->
+    <div class="col-6">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Vendor Name</h6>
+        </div>
+        <div class="card-body">
+            {{ object.vendor_name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Lowest right column -->
+  <div class="col-6">
+    <div class="card mb-4">
+      <div class="card-header py-3  border-left-success">
+        <h6 class="m-0 font-weight-bold text-primary">Remarks</h6>
+      </div>
+      <div class="card-body">
+          {{ object.remarks }}
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+    <div class="col-lg-12">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Parts in Invoice no. {{ object.invoice_number }}</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered datatable" id="dataTable">
+              <tr>
+                <th> Part Number</th>
+                <th> Part Name</th>
+                <th> Qty</th>
+                <th> Unit</th>
+                <th> Amount</th>
+                <th> GST %</th>
+                <th> Net amount</th>
+                <th> Remarks</th>
+              </tr>
+              <tbody>
+              {% for part in object.Invoice_parts %}
+                <tr>
+                  <td>{{ part.PartNumber }}</td>
+                  <td>{{ part.PartName }}</td>
+                  <td>{{ part.Qty }}</td>
+                  <td>{{ part.uom }}</td>
+                  <td>{{ part.Amt }}</td>
+                  <td>{{ part.GST }}</td>
+                  <td>{{ part.Net_amt }}</td>
+                  <td>{{ part.Remarks }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+{% endblock %}
+</div>

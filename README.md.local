@@ -1,0 +1,9 @@
+## Run
+docker run --rm -it -p 80:5000 -v (pwd):/app --env-file .env 476437295597.dkr.ecr.ap-south-1.amazonaws.com/aims:latest /start
+
+## Build and deploy
+docker build -t 476437295597.dkr.ecr.ap-south-1.amazonaws.com/aims:latest -f ./compose/production/django/Dockerfile .
+eval (aws ecr get-login --no-include-email --region ap-south-1)
+docker push 476437295597.dkr.ecr.ap-south-1.amazonaws.com/aims:latest
+aws ecs update-service --cluster adonmo-api --service aims --force-new-deployment
+

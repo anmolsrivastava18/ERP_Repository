@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Create Inward</h1>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Create Inward</h6>
+            </div>
+            <div class="card-body">
+              <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-6">
+                    {{ form.part_type |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.part_number |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.part_name |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.unit_of_measure |as_crispy_field }}
+                    <!-- Workaround to include disabled select field in form submit -->
+                    <input type="hidden" name="unit_of_measure" id="uom_select_hack" value="{{ form.unit_of_measure.value }}">
+                  </div>
+                  <div class="col-6">
+                    {{ form.received_date |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.to_warehouse_name |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.invoice_number |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.invoice_date |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.invoice_quantity |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.received_quantity |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.defected_quantity |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.batch_number |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.recived_by |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.vendor_name |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.from_warehouse_name |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.transport_charges |as_crispy_field }}
+                  </div>
+                  <div class="col-6">
+                    {{ form.remarks |as_crispy_field }}
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-success align-left" value="Save" />
+                <a class="btn btn-danger align-left" href="{% url 'inward-list' %}">
+                  <!-- <i class="fas fa-indent"></i> -->
+                  <span>Cancel</span>
+                </a>
+                    {% if form.non_field_errors %}
+                      <div class="text-center">
+                      <a class="small" style="color:red;">
+                        {% for error in form.non_field_errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </a>
+                    </div>
+                    {% endif %}
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+
+  <div class="modal fade" id="WarningModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Please verify !</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Verify the values of Invoice Quantity and Received Quantity. Usually, Invoice Quantity should not be less than Received Quantity.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">OK</button>
+          <!-- <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
+
+{% block pageLevelScripts %}
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+<script src="{% static 'js/project.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+
+        // Date picker
+        $("#id_invoice_date").attr("autocomplete", "off");
+        var picker = new Pikaday({ field: $('#id_invoice_date')[0] });
+
+        $("#id_received_date").attr("autocomplete", "off");
+        var picker = new Pikaday({ field: $('#id_received_date')[0] });
+
+        auto_fill_part_name_uom("{% url 'get_part_name' %}")
+
+        // Auto complete select 2 field
+        $('#id_part_number, #id_vendor_name').select2({
+          placeholder: '---------',
+          theme: 'bootstrap4',
+        });
+
+
+        $('#id_invoice_quantity, #id_received_quantity').change(function() {
+
+          var a = parseInt($('#id_invoice_quantity').val(), 10);
+          var b = parseInt($('#id_received_quantity').val(), 10);
+
+          if(a < b){
+            $('#WarningModal').modal('show');
+          }
+        });
+
+
+});
+
+</script>
+{%endblock%}

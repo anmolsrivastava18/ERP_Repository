@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-1 text-gray-800">Warehouse
+    <a href="{% url 'warehouse-update' pk=object.pk %}">
+      <i class="fas fa-edit"></i>
+    </a>
+  </h1>
+  <!-- <p class="mb-4">Bootstrap's default utility classes can be found on the official <a href="https://getbootstrap.com/docs">Bootstrap Documentation</a> page. The custom utilities below were created to extend this theme past the default utility classes built into Bootstrap's framework.</p> -->
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Border Left Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Warehouse Name
+          </h6>
+        </div>
+        <div class="card-body">
+          {% if perms.inventory.change_warehouse %}
+            <a href="{% url 'warehouse-update' pk=object.pk %}"> {{ object.warehouse_name }} </a>
+          {%else%}
+            <a> {{ object.warehouse_name }} </a>
+          {%endif%}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Warehouse Code</h6>
+        </div>
+        <div class="card-body">
+          {{ object.warehouse_code }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Warehouse address</h6>
+        </div>
+        <div class="card-body">
+          {{ object.address }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Warehouse City</h6>
+        </div>
+        <div class="card-body">
+          {{ object.city }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Phone Number</h6>
+        </div>
+        <div class="card-body">
+          {{ object.phone_number }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Warehouse Email</h6>
+        </div>
+        <div class="card-body">
+          {{ object.warehouse_email }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Warehouse incharge</h6>
+        </div>
+        <div class="card-body">
+          {{ object.incharge_name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Border Bottom Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Warehouse Incharge Email</h6>
+        </div>
+        <div class="card-body">
+          {{ object.incharge_email }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Incharge Number</h6>
+        </div>
+        <div class="card-body">
+          {{ object.incharge_phone_number }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">AIMS Person</h6>
+        </div>
+        <div class="card-body">
+          {{ object.aims_person }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">AIMS Person Number</h6>
+        </div>
+        <div class="card-body">
+          {{ object.aims_person_phone_number }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ object.remarks }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Last Updated</h6>
+        </div>
+        <div class="card-body">
+          {{ object.updated }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Created</h6>
+        </div>
+        <div class="card-body">
+          {{ object.timestamp }}
+        </div>
+      </div> 
+    </div>
+
+    <!-- Border Bottom Utilities -->
+    <div class="col-lg-6">
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

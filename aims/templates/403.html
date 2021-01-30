@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Forbidden (403){% endblock %}
+
+{% block index %}
+
+{% if messages %}
+    <div class="card-body">
+      <ul class="messages">
+          {% for message in messages %}
+            <h3>{{ message }}</h3>
+          {% endfor %}
+      </ul>
+  </div>
+
+{% endif %}
+<h1>Forbidden (403)</h1>
+<p>CSRF verification failed. Request aborted.</p>
+{% endblock index %}

@@ -1,0 +1,14 @@
+for i in range(100):
+
+    Warehouse.objects.create(
+
+    warehouse_name=f"warehousename{i}",
+    address=f"adddress line 1{i}",
+    city=f"City Name one{i}",
+    phone_number=f"9999999999{i}",
+    warehouse_email=f"warehosue {i}",
+    incharge_name=f"incharge anme {i}",
+    incharge_email=f"inchargeemail{i}@gmail.com",
+    incharge_phone_number=f"122222222{i}",
+    aims_person_phone_number=f"876545678745{i}",
+    )

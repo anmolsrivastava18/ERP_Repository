@@ -1,0 +1,2 @@
+# Cron Job to Run Every Day at 11:00 PM
+0 23 * * * /usr/local/bin/python /app/manage.py average_price

@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block index %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+   <!-- Page Heading -->
+   <h1 class="h3 mb-2 text-gray-800">Create Bill of Material - Copy </h1>
+   <!-- DataTales Example -->
+   <div class="card shadow mb-4">
+      <div class="card-header py-3">
+         <h6 class="m-0 font-weight-bold text-primary d-inline align-left">Create Bill of Material - Copy </h6>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-danger fade show" style="display: none;">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Error!</strong> Parts table has invalid data in the rows: <span id="error_count"></span>
+        </div>
+        <!-- Copy existing bom is implemented by using Update view to get data and using CreateView url when posting -->
+         <form action="{% url 'bom-add' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+               <div class="col-6">
+                  {{ form.bom_name |as_crispy_field }}
+               </div>
+               <div class="col-6">
+                  {{ form.bom_description |as_crispy_field }}
+               </div>
+               <div class="col-12">
+                  {{ form.parts |as_crispy_field }}
+               </div>
+               <!-- Dynamic Form start -->
+               <div class="col-md-12 table-responsive">
+                  <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                     <thead>
+                        <tr >
+
+                           <th class="text-center" style="display: none;">
+                              BatchNumber
+                           </th>
+                           <th class="text-center">
+                              PartNumber
+                           </th>
+                           <th class="text-center">
+                              PartName
+                           </th>
+                           <th class="text-center">
+                              Qty
+                           </th>
+                           <th class="text-center">
+                              Remarks
+                           </th>
+                           <th><a id="add_row" class="btn btn-primary "><span class="white-color">Add Row</span> </a></th>
+                        </tr>
+                     </thead>
+                     <tbody id="table_body">
+
+
+
+                     </tbody>
+                  </table>
+               </div>
+               <!-- Dynamic Form END -->
+               <div class="col-6">
+                  {{ form.bom_file |as_crispy_field }}
+               </div>
+               <div class="col-6">
+                  {{ form.remarks |as_crispy_field }}
+               </div>
+            </div>
+            <input type="submit" class="btn btn-success align-left" value="Save" />
+            <a class="btn btn-danger align-left" href="{% url 'bom-list' %}">
+               <!-- <i class="fas fa-indent"></i> -->
+               <span>Cancel</span>
+            </a>
+            {% if form.non_field_errors %}
+            <div class="text-center">
+               <a class="small" style="color:red;">
+               {% for error in form.non_field_errors %}
+               {{ error }}
+               {% endfor %}
+               </a>
+            </div>
+            {% endif %}
+         </form>
+      </div>
+   </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block pageLevelScripts %}
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+
+<script>
+$(document).ready(function() {
+
+    // var parts = $('#id_parts').val('[{"Qty":10,"BatchNumber":2345,"PartName":"Part Name ","PartNumber":123,"Remarks":"NA "},{"Qty":10,"BatchNumber":2345,"PartName":"Part Name ","PartNumber":123,"Remarks":"NA "}]')
+
+    // Dynamic rows START
+    $('#id_parts').hide();
+
+
+    function get_row_template(Qty = "", PartNumber = "", PartName = "", Remarks = "") {
+
+        return `
+      <tr>
+
+         <td style="display: none;"><input data-name="BatchNumber" type="text"value=""  placeholder='BatchNumber' class="form-control"/></td>
+         <td><select data-name="PartNumber" placeholder="PartNumber" class="form-control" >
+            <option value="${PartNumber}" selected>${PartNumber}</option>
+         </select></td>
+         <td><select data-name="PartName"   placeholder="PartName" class="form-control" >
+            <option value="${PartName}" selected>${PartName}</option>
+         </select></td>
+         <td><input data-name="Qty" type="text" value="${Qty}" placeholder="Qty" class="form-control"/></td>
+         <td><input data-name="Remarks" type="text" value="${Remarks}"  placeholder="Remarks" class="form-control"/></td>
+         <td><a class='btn btn-danger row-remove'><span class="glyphicon glyphicon-remove white-color">X</span></a></td>
+      </tr>
+       `
+    }
+
+
+    // Render rows if there are parts already, useful in update for view and re-render of create form on errors
+    var parts_json = JSON.parse($('#id_parts').val());
+
+    jQuery.each(parts_json, function(i, val) {
+        $(get_row_template(Qty = val.Qty, PartNumber = val.PartNumber, PartName = val.PartName, Remarks = val.Remarks)).appendTo($('#table_body'))
+
+    })
+
+
+
+    // Create one row at start if there are now values at start
+    if ($('#table_body > tr').length == 0) {
+        $($(get_row_template()).find('option').remove().end()).appendTo($('#table_body'));
+    }
+
+
+
+    $("#add_row").on("click", function() {
+        console.log("add button clicked");
+        // add the new row
+        $(get_row_template()).appendTo($('#table_body'));
+
+        Select_field_autocomplete('[data-name="PartNumber"]', "{% url 'get_part_number_name' %}");
+        Select_field_autocomplete('[data-name="PartName"]', "{% url 'get_part_name_number' %}");
+        refresh_remove_btn_event()
+
+    });
+
+    refresh_remove_btn_event();
+
+    function refresh_remove_btn_event() {
+        $("#table_body>tr>td a.row-remove").on("click", function() {
+            console.log("remove button clicked");
+            $(this).closest("tr").remove();
+        });
+    }
+
+    // Dynamic rows END
+    // form submit logic START
+
+    $("form").submit(function(event) {
+        var rows = []
+        event.preventDefault();
+        $('#tab_logic>tbody>tr').each(function() {
+
+            var row = {
+                "Qty": $(this).find('[data-name="Qty"]').val(),
+                "BatchNumber": "",
+                "PartNumber": $(this).find('[data-name="PartNumber"]').val(),
+                "PartName": $(this).find('[data-name="PartName"]').val(),
+                "Remarks": $(this).find('[data-name="Remarks"]').val(),
+            }
+
+            // if(row.PartNumber == null){row.PartNumber=""}
+
+            rows.push(row)
+        });
+
+        $('#id_parts').val(JSON.stringify(rows));
+
+        var invalid_rows = []
+
+        rows.forEach(function(v, i) {
+            console.log('%d: %s', i, v);
+            if (v.Qty == "" || v.PartNumber == "" || v.PartName == "") {
+                console.log("if invalid rows")
+                invalid_rows.push(i + 1)
+            }
+        });
+
+        if (invalid_rows.length > 0) {
+            $('.alert.alert-danger').show()
+            $('#error_count').text(invalid_rows.join(','))
+
+        } else {
+            $('.alert.alert-danger').hide()
+            event.currentTarget.submit();
+        }
+
+    })
+    // form submit logic END
+
+    // Auto complete select 2 field START
+    function Select_field_autocomplete(selector, url) {
+        console.log("Select_field_autocomplete called")
+        $(selector).select2({
+            ajax: {
+                url: url,
+                dataType: 'json',
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Search',
+            minimumInputLength: 2,
+            theme: 'bootstrap4',
+            dropdownAutoWidth: true,
+            width: 'auto',
+            casesensitive: false,
+            delay: 2000
+        });
+
+        if (selector == '[data-name="PartNumber"]') {
+            $(selector).on("select2:select", function(e) {
+                console.log("PartNumber selected and part name is: " + e.params.data.part_name)
+                $(this).closest('tr').find('[data-name="PartName"]').find(
+                    'option').remove().end().append(
+                    `<option value="${e.params.data.part_name}" selected>${e.params.data.part_name}</option>`
+                ).trigger('change')
+
+            });
+
+        }
+
+        if (selector == '[data-name="PartName"]') {
+            $(selector).on("select2:select", function(e) {
+                console.log("PartName selected and PartName is: " + e.params.data.part_number)
+                $(this).closest('tr').find('[data-name="PartNumber"]').find(
+                    'option').remove().end().append(
+                    `<option value="${e.params.data.part_number}" selected>${e.params.data.part_number}</option>`
+                ).trigger('change')
+            });
+        }
+
+    }
+
+    // Auto complete select 2 field END
+    Select_field_autocomplete('[data-name="PartNumber"]', "{% url 'get_part_number_name' %}");
+    Select_field_autocomplete('[data-name="PartName"]', "{% url 'get_part_name_number' %}");
+
+});
+</script>
+
+{%endblock%}
+
+
+

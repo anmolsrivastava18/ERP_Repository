@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    body {
+        height: 842px;
+        width: 595px;
+        /* to centre page on screen*/
+        margin-left: auto;
+        margin-right: auto;
+    }
+    </style>
+  </head>
+  <body>
+	<h2 style="text-align: center;">OutWard Receipt</h2>
+	<p>&nbsp;</p>
+	<table style="width: 675px;">
+		<tbody>
+			<tr>
+				<td>
+					<p><strong>AdOnMo Private Limited</strong><br/>
+						AB104 FLR, Aparna CyberZon,
+						<br/> Near:Citizen Hospital, Seriligampally,
+						<br/> Hyderabad, Hyderabad, Telangana 500019.
+						<br> Ph No: 7337337330
+						<br>finance@adonmo.com
+						<br>GSTIN: 36AAOCA5720E1ZS
+						<br/>CIN: U74999TG2016PTC110849
+					</p>
+				</td>
+				<td> <img style="display: block; margin-left: auto; margin-right: auto;" src="https://www.adonmo.com/images/logo.png" alt="logo" width="304" height="110" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p><strong>RECEIPT TO Warehouse:</strong></p>
+					<p>{{ object.to_warehouse_name | default_if_none:"-" }}</p>
+					<p> - </p>
+					<p> - </p>
+				</td>
+				<td>
+					<p><strong>RECEIPT TO Vendor:​</strong></p>
+					<p>{{ object.vendor_name | default_if_none:"-" }} </p>
+					<p>{{ object.vendor_name.vendor_address | default_if_none:"-" }}</p>
+					<p>Ph No: {{ object.vendor_name.phone_number1 | default_if_none:"-" }}</p>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p><strong>Place OF Receipt Generated</strong></p>
+					<p>{{ object.from_warehouse_name }}</p>
+				</td>
+				<td> &nbsp;
+					<p><strong>Outward Receipt NO</strong>: {{ object.outward_receipt_number }}</p>
+					<p><strong>DATE </strong>{{ object.updated | date:"d/m/y" }}</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr/>
+	<p>&nbsp;</p>
+	<style> table.example-table, .example-table td { border: 1px solid black; border-collapse: collapse; } </style>
+	<table style="width: 643px;" class="example-table">
+		<tbody>
+		<tr>
+			<td style="width: 53px; text-align: center;"><strong>Sl No</strong></td>
+			<td style="width: 151px; text-align: center;"><strong>Part Number</strong></td>
+			<td style="width: 177px; text-align: center;"><strong>Part Name</strong></td>
+			<td style="width: 83px; text-align: center;"><strong>QTY</strong></td>
+			<td style="width: 217px; text-align: center;"><strong>BatchNumber</strong></td>
+		</tr>
+		<tr>
+			<td style="width: 53px; text-align: center;">1</td>
+			<td style="width: 151px; text-align: center;">{{ object.part_number }}</td>
+			<td style="width: 177px; text-align: center;">{{ object.part_name }}</td>
+			<td style="width: 83px; text-align: center;">{{ object.quantity }}</td>
+			<td style="width: 217px; text-align: center;">{{ object.batch_number | default_if_none:"" }}</td>
+		</tr>
+		</tbody>
+	</table>
+	<p>&nbsp;</p>
+	<p>Mode of Transport:&nbsp; {{ object.mode_of_transport | default_if_none:""}} </p>
+	<p>Transport Charges: {{ object.transport_charges | default_if_none:"" }}</p>
+	<p style="text-align: right;">Authorised Signature</p>
+  	<form>
+		<input type=button value="Print" onClick="javascript:window.print()">
+		<a class="btn btn-danger align-left" href="{% url 'outward-list' %}">
+    	    <span>Back</span>
+  		</a>
+	</form>
+  </body>
+
+</html>

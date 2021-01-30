@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-1 text-gray-800">Vendor Details
+    <a href="{% url 'vendor-update' pk=object.pk %}">
+      <i class="fas fa-edit"></i>
+    </a>
+  </h1>
+  <!-- <p class="mb-4">Bootstrap's default utility classes can be found on the official <a href="https://getbootstrap.com/docs">Bootstrap Documentation</a> page. The custom utilities below were created to extend this theme past the default utility classes built into Bootstrap's framework.</p> -->
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Border Left Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3 border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Vendor Name</h6>
+        </div>
+        {% if perms.inventory.change_vendor %}
+          <div class="card-body"> 
+            <a href="{% url 'vendor-update' pk=object.pk %}"> {{ object.vendor_name }} </a>
+          </div>
+        {%else%}
+          <div class="card-body"> 
+            <a> {{ object.vendor_name }} </a>
+          </div>
+        {%endif%}
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Vendor Code</h6>
+        </div>
+        <div class="card-body">
+          {{ object.vendor_code }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Vendor address</h6>
+        </div>
+        <div class="card-body">
+          {{ object.vendor_address }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Vendor POC</h6>
+        </div>
+        <div class="card-body">
+          {{ object.vendor_poc }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Vendor Email</h6>
+        </div>
+        <div class="card-body">
+          {{ object.email1 }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Vendor Email-2</h6>
+        </div>
+        <div class="card-body">
+          {{ object.email2 }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Vendor Phone Number </h6>
+        </div>
+        <div class="card-body">
+          {{ object.phone_number1 }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Border Bottom Utilities -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Vendor phone number 2</h6>
+        </div>
+        <div class="card-body">
+          {{ object.phone_number2 }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">Type of Products Available</h6>
+        </div>
+        <div class="card-body">
+          {{ object.products_available }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-info">
+          <h6 class="m-0 font-weight-bold text-info">Components Procured by ADM</h6>
+        </div>
+        <div class="card-body">
+          {{ object.procured_by_adm }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Vendor Since</h6>
+        </div>
+        <div class="card-body">
+          {{ object.vendor_since }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-success">
+          <h6 class="m-0 font-weight-bold text-success">ADM POC</h6>
+        </div>
+        <div class="card-body">
+          {{ object.adm_poc }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Remarks</h6>
+        </div>
+        <div class="card-body">
+          {{ object.remarks }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-warning">
+          <h6 class="m-0 font-weight-bold text-warning">Last Updated</h6>
+        </div>
+        <div class="card-body">
+          {{ object.updated }}
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header py-3  border-left-primary">
+          <h6 class="m-0 font-weight-bold text-primary">Created</h6>
+        </div>
+        <div class="card-body">
+          {{ object.timestamp }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
