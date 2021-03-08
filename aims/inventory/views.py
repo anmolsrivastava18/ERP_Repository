@@ -184,12 +184,10 @@ def calculate_stock(warehouse=None, safety_stock=None):
                 )
             )
             outwards = (
-                Outward.objects.filter(from_warehouse_name=warehouse)
-                    .values(
+                Outward.objects.filter(from_warehouse_name=warehouse).values(
                     "part_number__part_name",
                     "part_number__safety_stock"
-                ).order_by("part_number__part_name")
-                    .annotate(outward_qt_total=Sum("quantity"))
+                ).order_by("part_number__part_name").annotate(outward_qt_total=Sum("quantity"))
             )
         else:
             inwards = (
