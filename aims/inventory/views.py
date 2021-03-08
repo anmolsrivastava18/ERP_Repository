@@ -86,7 +86,6 @@ def home(request):
     """."""
     return render(request, 'index.html')
 
-
 @login_required
 def get_stock(request):
     """
